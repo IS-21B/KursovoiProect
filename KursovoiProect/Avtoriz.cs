@@ -21,7 +21,7 @@ namespace KursovoiProect
             string UserPass = textBox2.Text;
 
             // Проверка на введенные данные "admin"
-            if (UserLogin == "admin" && UserPass == "admin")
+            if (UserLogin == "admin1" && UserPass == "admin1")
             {
                 // Создаем и открываем форму администратора
                 Vostanovlenie adminForm = new Vostanovlenie(); // Имя можно изменить или оставить "Admin"
