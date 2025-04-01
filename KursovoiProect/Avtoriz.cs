@@ -1,19 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Drawing.Drawing2D;
 using System.Security.Cryptography;
-using System.Data.SqlClient;
-
-
+using System.Text;
+using System.Windows.Forms;
 
 namespace KursovoiProect
 {
@@ -23,30 +12,24 @@ namespace KursovoiProect
         {
             InitializeComponent();
         }
+
         string conn = Connection.myConnection;
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private string HashPassword(string password)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder builder = new StringBuilder();
-                foreach (byte b in bytes)
-                {
-                    builder.Append(b.ToString("x2"));
-                }
-                return builder.ToString();
-            }
-        }
         private void button1_Click(object sender, EventArgs e)
         {
             string UserLogin = textBox1.Text;
             string UserPass = textBox2.Text;
+
+            // Проверка на введенные данные "admin"
+            if (UserLogin == "admin" && UserPass == "admin")
+            {
+                // Создаем и открываем форму администратора
+                Vostanovlenie adminForm = new Vostanovlenie(); // Имя можно изменить или оставить "Admin"
+                adminForm.Show();
+                this.Hide(); // Скрываем форму авторизации
+                return; // Завершаем выполнение метода
+
+            }
 
             if (UserLogin.Length != 0)
             {
@@ -101,9 +84,23 @@ namespace KursovoiProect
             }
         }
 
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                foreach (byte b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
         private void Avtoriz_Load(object sender, EventArgs e)
         {
-            // Ваш код для загрузки формы
+            // Дополнительная инициализация, если требуется
         }
 
         private void pictureBox1_Click_1(object sender, EventArgs e)

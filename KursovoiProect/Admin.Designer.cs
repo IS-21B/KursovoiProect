@@ -33,6 +33,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.vost = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -86,7 +87,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.BackColor = System.Drawing.Color.SteelBlue;
             this.button4.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button4.Location = new System.Drawing.Point(75, 264);
+            this.button4.Location = new System.Drawing.Point(75, 285);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(145, 50);
             this.button4.TabIndex = 3;
@@ -104,12 +105,28 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Имя пользователя:";
             // 
+            // vost
+            // 
+            this.vost.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.vost.BackColor = System.Drawing.Color.SteelBlue;
+            this.vost.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.vost.Location = new System.Drawing.Point(75, 229);
+            this.vost.Name = "vost";
+            this.vost.Size = new System.Drawing.Size(145, 50);
+            this.vost.TabIndex = 5;
+            this.vost.Text = "Востановлене";
+            this.vost.UseVisualStyleBackColor = false;
+            this.vost.Click += new System.EventHandler(this.vost_Click);
+            // 
             // Admin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(293, 337);
+            this.Controls.Add(this.vost);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -130,5 +147,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button vost;
     }
 }
