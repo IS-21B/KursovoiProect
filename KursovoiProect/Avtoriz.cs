@@ -1,5 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Drawing;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -8,12 +10,18 @@ namespace KursovoiProect
 {
     public partial class Avtoriz : Form
     {
+        private string captchaText;
         private DateTime lastFailedAttempt;
+        private bool captchaShown;
 
         public Avtoriz()
         {
             InitializeComponent();
             this.Width = 325;
+            pictureBoxCaptcha.Visible = false;
+            textBoxCaptcha.Visible = false;
+            GenerateCaptcha(); 
+            captchaShown = false; 
         }
 
         string conn = Connection.myConnection;
@@ -29,7 +37,15 @@ namespace KursovoiProect
 
             string UserLogin = textBox1.Text;
             string UserPass = textBox2.Text;
+            string UserCaptcha = textBoxCaptcha.Text;
 
+            if (textBoxCaptcha.Visible && !string.IsNullOrEmpty(UserCaptcha) && UserCaptcha != captchaText)
+            {
+                lastFailedAttempt = DateTime.Now;
+                MessageBox.Show("Неверный код CAPTCHA", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                GenerateCaptcha(); 
+                return;
+            }
             // Проверка введенных данных "admin"
             if (UserLogin == "admin1" && UserPass == "admin1")
             {
@@ -94,9 +110,47 @@ namespace KursovoiProect
         private void HandleInvalidLogin()
         {
             lastFailedAttempt = DateTime.Now; 
-            MessageBox.Show("Введен неверный логин или пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+            if (!captchaShown) 
+            {
+                this.Width += 300; 
+                captchaShown = true; 
+            }
 
+            MessageBox.Show("Введен неверный логин или пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            ShowCaptcha();
+        }
+        private void ShowCaptcha()
+        {
+            
+            pictureBoxCaptcha.Visible = true;
+            textBoxCaptcha.Visible = true;
+            GenerateCaptcha();
+        }
+        private void GenerateCaptcha()
+        {
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            Random random = new Random();
+
+            captchaText = new string(Enumerable.Repeat(chars, 4).Select(s => s[random.Next(s.Length)]).ToArray());
+            Bitmap bitmap = new Bitmap(200, 80);
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.Clear(Color.White);
+                using (Font font = new Font("Arial", 40, FontStyle.Bold))
+                {
+                    g.DrawString(captchaText, font, Brushes.Black, new PointF(20, 20));
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    g.DrawLine(new Pen(Color.LightGray, 2),
+                               random.Next(0, bitmap.Width),
+                               random.Next(0, bitmap.Height),
+                               random.Next(0, bitmap.Width),
+                               random.Next(0, bitmap.Height));
+                }
+            }
+            pictureBoxCaptcha.Image = bitmap; 
+        }
         private string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
