@@ -39,6 +39,7 @@
             this.pictureBoxCaptcha = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxCaptcha = new System.Windows.Forms.TextBox();
+            this.rez = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCaptcha)).BeginInit();
             this.SuspendLayout();
@@ -117,9 +118,9 @@
             // 
             // pictureBoxCaptcha
             // 
-            this.pictureBoxCaptcha.Location = new System.Drawing.Point(330, 93);
+            this.pictureBoxCaptcha.Location = new System.Drawing.Point(344, 93);
             this.pictureBoxCaptcha.Name = "pictureBoxCaptcha";
-            this.pictureBoxCaptcha.Size = new System.Drawing.Size(244, 104);
+            this.pictureBoxCaptcha.Size = new System.Drawing.Size(230, 85);
             this.pictureBoxCaptcha.TabIndex = 8;
             this.pictureBoxCaptcha.TabStop = false;
             // 
@@ -136,19 +137,31 @@
             // textBoxCaptcha
             // 
             this.textBoxCaptcha.BackColor = System.Drawing.Color.LightBlue;
-            this.textBoxCaptcha.Location = new System.Drawing.Point(362, 213);
+            this.textBoxCaptcha.Location = new System.Drawing.Point(369, 184);
             this.textBoxCaptcha.Multiline = true;
             this.textBoxCaptcha.Name = "textBoxCaptcha";
             this.textBoxCaptcha.Size = new System.Drawing.Size(151, 28);
             this.textBoxCaptcha.TabIndex = 10;
             this.textBoxCaptcha.UseSystemPasswordChar = true;
             // 
+            // rez
+            // 
+            this.rez.BackColor = System.Drawing.Color.SteelBlue;
+            this.rez.Location = new System.Drawing.Point(385, 231);
+            this.rez.Name = "rez";
+            this.rez.Size = new System.Drawing.Size(118, 39);
+            this.rez.TabIndex = 11;
+            this.rez.Text = "Обновить";
+            this.rez.UseVisualStyleBackColor = false;
+            this.rez.Click += new System.EventHandler(this.rez_Click);
+            // 
             // Avtoriz
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(303, 282);
+            this.ClientSize = new System.Drawing.Size(642, 282);
+            this.Controls.Add(this.rez);
             this.Controls.Add(this.textBoxCaptcha);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.pictureBoxCaptcha);
@@ -180,6 +193,7 @@
         private System.Windows.Forms.PictureBox pictureBoxCaptcha;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxCaptcha;
+        private System.Windows.Forms.Button rez;
     }
 }
 

@@ -118,6 +118,7 @@ namespace KursovoiProect
 
             MessageBox.Show("Введен неверный логин или пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Error);
             ShowCaptcha();
+            textBoxCaptcha.Clear();
         }
         private void ShowCaptcha()
         {
@@ -178,6 +179,11 @@ namespace KursovoiProect
             this.Visible = false;
             settingsForm.ShowDialog();
             this.Close();
+        }
+
+        private void rez_Click(object sender, EventArgs e)
+        {
+            GenerateCaptcha();
         }
     }
 }
