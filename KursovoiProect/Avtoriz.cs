@@ -8,30 +8,38 @@ namespace KursovoiProect
 {
     public partial class Avtoriz : Form
     {
+        private DateTime lastFailedAttempt;
+
         public Avtoriz()
         {
             InitializeComponent();
+            this.Width = 325;
         }
 
         string conn = Connection.myConnection;
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // Проверка времени блокировки после неудачной попытки
+            if (DateTime.Now < lastFailedAttempt.AddSeconds(10))
+            {
+                MessageBox.Show("Блокировка на 10 секунд. Попробуйте еще раз позже.", "Доступ запрещен", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             string UserLogin = textBox1.Text;
             string UserPass = textBox2.Text;
 
-            // Проверка на введенные данные "admin"
+            // Проверка введенных данных "admin"
             if (UserLogin == "admin1" && UserPass == "admin1")
             {
-                // Создаем и открываем форму администратора
-                Vostanovlenie adminForm = new Vostanovlenie(); // Имя можно изменить или оставить "Admin"
+                Vostanovlenie adminForm = new Vostanovlenie();
                 adminForm.Show();
-                this.Hide(); // Скрываем форму авторизации
-                return; // Завершаем выполнение метода
-
+                this.Hide();
+                return;
             }
 
-            if (UserLogin.Length != 0)
+            if (!string.IsNullOrEmpty(UserLogin) && !string.IsNullOrEmpty(UserPass))
             {
                 using (MySqlConnection con = new MySqlConnection(conn))
                 {
@@ -49,25 +57,24 @@ namespace KursovoiProect
                                 if (reader.HasRows)
                                 {
                                     reader.Read();
-                                    string userName = reader["Name"].ToString(); // Получаем имя пользователя
+                                    string userName = reader["Name"].ToString();
                                     string role = reader["RollID"].ToString();
 
                                     if (role == "1")
                                     {
-                                        Admin form = new Admin(userName); // Передаем имя администратора
-                                        form.Show();
+                                        Admin adminForm = new Admin(userName);
+                                        adminForm.Show();
                                     }
                                     else if (role == "2")
                                     {
-                                        Seller form = new Seller(userName); // Передаем имя продавца
-                                        form.Show();
+                                        Seller sellerForm = new Seller(userName);
+                                        sellerForm.Show();
                                     }
-
-                                    this.Hide(); // Скрываем форму авторизации
+                                    this.Hide(); 
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Введен неверный логин или пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    HandleInvalidLogin(); 
                                 }
                             }
                         }
@@ -80,8 +87,14 @@ namespace KursovoiProect
             }
             else
             {
-                MessageBox.Show("Введите логин", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Введите логин и пароль", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void HandleInvalidLogin()
+        {
+            lastFailedAttempt = DateTime.Now; 
+            MessageBox.Show("Введен неверный логин или пароль", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private string HashPassword(string password)
@@ -97,17 +110,19 @@ namespace KursovoiProect
                 return builder.ToString();
             }
         }
-
-        private void Avtoriz_Load(object sender, EventArgs e)
+        private void pictureBox1_Click(object sender, EventArgs e)
         {
-            // Дополнительная инициализация, если требуется
+            Settings settingsForm = new Settings();
+            this.Visible = false;
+            settingsForm.ShowDialog();
+            this.Close();
         }
 
         private void pictureBox1_Click_1(object sender, EventArgs e)
         {
-            Settings serverSettinng = new Settings();
+            Settings settingsForm = new Settings();
             this.Visible = false;
-            serverSettinng.ShowDialog();
+            settingsForm.ShowDialog();
             this.Close();
         }
     }

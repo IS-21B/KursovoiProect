@@ -36,7 +36,11 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBoxCaptcha = new System.Windows.Forms.PictureBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBoxCaptcha = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCaptcha)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -109,15 +113,45 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Visible = false;
-           // this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // pictureBoxCaptcha
+            // 
+            this.pictureBoxCaptcha.Location = new System.Drawing.Point(330, 93);
+            this.pictureBoxCaptcha.Name = "pictureBoxCaptcha";
+            this.pictureBoxCaptcha.Size = new System.Drawing.Size(244, 104);
+            this.pictureBoxCaptcha.TabIndex = 8;
+            this.pictureBoxCaptcha.TabStop = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label4.Location = new System.Drawing.Point(390, 49);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(102, 27);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "CAPTCHA";
+            // 
+            // textBoxCaptcha
+            // 
+            this.textBoxCaptcha.BackColor = System.Drawing.Color.LightBlue;
+            this.textBoxCaptcha.Location = new System.Drawing.Point(362, 213);
+            this.textBoxCaptcha.Multiline = true;
+            this.textBoxCaptcha.Name = "textBoxCaptcha";
+            this.textBoxCaptcha.Size = new System.Drawing.Size(151, 28);
+            this.textBoxCaptcha.TabIndex = 10;
+            this.textBoxCaptcha.UseSystemPasswordChar = true;
             // 
             // Avtoriz
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(298, 282);
+            this.ClientSize = new System.Drawing.Size(303, 282);
+            this.Controls.Add(this.textBoxCaptcha);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.pictureBoxCaptcha);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button1);
@@ -127,8 +161,8 @@
             this.Controls.Add(this.label1);
             this.Name = "Avtoriz";
             this.Text = "Авторизация";
-            this.Load += new System.EventHandler(this.Avtoriz_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCaptcha)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -143,6 +177,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBoxCaptcha;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBoxCaptcha;
     }
 }
 
