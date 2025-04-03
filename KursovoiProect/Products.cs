@@ -196,6 +196,7 @@ namespace KursovoiProect
                 buttonPage.Tag = i; // Для обработки номера страницы
                 buttonPage.Click += ButtonPage_Click;
                 flowLayoutPanelPagination.Controls.Add(buttonPage);
+                labelCurrentPage.Text = $"Страница {currentPage} из {totalPages}";
             }
         }
 

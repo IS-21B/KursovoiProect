@@ -39,6 +39,7 @@
             this.flowLayoutPanelPagination = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonNext = new System.Windows.Forms.Button();
             this.buttonPrevious = new System.Windows.Forms.Button();
+            this.labelCurrentPage = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -119,14 +120,14 @@
             // 
             // flowLayoutPanelPagination
             // 
-            this.flowLayoutPanelPagination.Location = new System.Drawing.Point(67, 556);
+            this.flowLayoutPanelPagination.Location = new System.Drawing.Point(64, 568);
             this.flowLayoutPanelPagination.Name = "flowLayoutPanelPagination";
             this.flowLayoutPanelPagination.Size = new System.Drawing.Size(214, 35);
             this.flowLayoutPanelPagination.TabIndex = 21;
             // 
             // buttonNext
             // 
-            this.buttonNext.Location = new System.Drawing.Point(287, 556);
+            this.buttonNext.Location = new System.Drawing.Point(284, 568);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(45, 35);
             this.buttonNext.TabIndex = 22;
@@ -136,7 +137,7 @@
             // 
             // buttonPrevious
             // 
-            this.buttonPrevious.Location = new System.Drawing.Point(16, 556);
+            this.buttonPrevious.Location = new System.Drawing.Point(13, 568);
             this.buttonPrevious.Name = "buttonPrevious";
             this.buttonPrevious.Size = new System.Drawing.Size(45, 35);
             this.buttonPrevious.TabIndex = 23;
@@ -144,12 +145,22 @@
             this.buttonPrevious.UseVisualStyleBackColor = true;
             this.buttonPrevious.Click += new System.EventHandler(this.buttonPrevious_Click);
             // 
+            // labelCurrentPage
+            // 
+            this.labelCurrentPage.AutoSize = true;
+            this.labelCurrentPage.Location = new System.Drawing.Point(23, 540);
+            this.labelCurrentPage.Name = "labelCurrentPage";
+            this.labelCurrentPage.Size = new System.Drawing.Size(35, 13);
+            this.labelCurrentPage.TabIndex = 24;
+            this.labelCurrentPage.Text = "label3";
+            // 
             // Products
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(969, 603);
+            this.Controls.Add(this.labelCurrentPage);
             this.Controls.Add(this.buttonPrevious);
             this.Controls.Add(this.buttonNext);
             this.Controls.Add(this.flowLayoutPanelPagination);
@@ -182,5 +193,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPagination;
         private System.Windows.Forms.Button buttonNext;
         private System.Windows.Forms.Button buttonPrevious;
+        private System.Windows.Forms.Label labelCurrentPage;
     }
 }
