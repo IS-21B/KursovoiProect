@@ -36,6 +36,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxCategories = new System.Windows.Forms.ComboBox();
+            this.flowLayoutPanelPagination = new System.Windows.Forms.FlowLayoutPanel();
+            this.buttonNext = new System.Windows.Forms.Button();
+            this.buttonPrevious = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,18 +46,18 @@
             // 
             this.dataGridView1.BackgroundColor = System.Drawing.Color.AliceBlue;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 70);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 47);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(962, 312);
+            this.dataGridView1.Size = new System.Drawing.Size(952, 490);
             this.dataGridView1.TabIndex = 12;
             // 
             // buttonAdd
             // 
             this.buttonAdd.BackColor = System.Drawing.Color.SteelBlue;
             this.buttonAdd.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonAdd.Location = new System.Drawing.Point(841, 388);
+            this.buttonAdd.Location = new System.Drawing.Point(832, 551);
             this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(133, 40);
+            this.buttonAdd.Size = new System.Drawing.Size(132, 40);
             this.buttonAdd.TabIndex = 13;
             this.buttonAdd.Text = "Редактировать";
             this.buttonAdd.UseVisualStyleBackColor = false;
@@ -64,9 +67,9 @@
             // 
             this.button1.BackColor = System.Drawing.Color.SteelBlue;
             this.button1.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(702, 388);
+            this.button1.Location = new System.Drawing.Point(693, 551);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(133, 40);
+            this.button1.Size = new System.Drawing.Size(132, 40);
             this.button1.TabIndex = 14;
             this.button1.Text = "Назад";
             this.button1.UseVisualStyleBackColor = false;
@@ -86,7 +89,6 @@
             this.comboBoxSortByPrice.Name = "comboBoxSortByPrice";
             this.comboBoxSortByPrice.Size = new System.Drawing.Size(121, 21);
             this.comboBoxSortByPrice.TabIndex = 17;
-
             // 
             // label1
             // 
@@ -115,12 +117,42 @@
             this.comboBoxCategories.Size = new System.Drawing.Size(121, 21);
             this.comboBoxCategories.TabIndex = 20;
             // 
+            // flowLayoutPanelPagination
+            // 
+            this.flowLayoutPanelPagination.Location = new System.Drawing.Point(67, 556);
+            this.flowLayoutPanelPagination.Name = "flowLayoutPanelPagination";
+            this.flowLayoutPanelPagination.Size = new System.Drawing.Size(214, 35);
+            this.flowLayoutPanelPagination.TabIndex = 21;
+            // 
+            // buttonNext
+            // 
+            this.buttonNext.Location = new System.Drawing.Point(287, 556);
+            this.buttonNext.Name = "buttonNext";
+            this.buttonNext.Size = new System.Drawing.Size(45, 35);
+            this.buttonNext.TabIndex = 22;
+            this.buttonNext.Text = "->";
+            this.buttonNext.UseVisualStyleBackColor = true;
+            this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            // 
+            // buttonPrevious
+            // 
+            this.buttonPrevious.Location = new System.Drawing.Point(16, 556);
+            this.buttonPrevious.Name = "buttonPrevious";
+            this.buttonPrevious.Size = new System.Drawing.Size(45, 35);
+            this.buttonPrevious.TabIndex = 23;
+            this.buttonPrevious.Text = "<-";
+            this.buttonPrevious.UseVisualStyleBackColor = true;
+            this.buttonPrevious.Click += new System.EventHandler(this.buttonPrevious_Click);
+            // 
             // Products
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(986, 436);
+            this.ClientSize = new System.Drawing.Size(969, 603);
+            this.Controls.Add(this.buttonPrevious);
+            this.Controls.Add(this.buttonNext);
+            this.Controls.Add(this.flowLayoutPanelPagination);
             this.Controls.Add(this.comboBoxCategories);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -147,5 +179,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBoxCategories;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPagination;
+        private System.Windows.Forms.Button buttonNext;
+        private System.Windows.Forms.Button buttonPrevious;
     }
 }

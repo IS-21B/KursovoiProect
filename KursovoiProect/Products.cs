@@ -4,6 +4,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+
 namespace KursovoiProect
 {
     public partial class Products : Form
@@ -11,6 +12,11 @@ namespace KursovoiProect
         private DataTable sourceTable;
         private DataTable categoryTable;
         private DataTable supplierTable;
+
+        private int currentPage = 1;
+        private const int pageSize = 20;
+        private int totalRecords;
+        private int totalPages;
 
         public Products()
         {
@@ -23,6 +29,7 @@ namespace KursovoiProect
 
             // Инициализация ComboBox для сортировки
             InitializeSortComboBox();
+            InitializePagination(); // Инициализация пагинации
         }
 
         private void InitializeSortComboBox()
@@ -32,6 +39,19 @@ namespace KursovoiProect
             comboBoxSortByPrice.Items.Add("По убыванию");
             comboBoxSortByPrice.SelectedIndex = 0; // Установить по умолчанию на "Не сортировать"
             comboBoxSortByPrice.SelectedIndexChanged += ComboBoxSortByPrice_SelectedIndexChanged;
+        }
+
+        private void InitializePagination()
+        {
+            // Создаем кнопки для пагинации в зависимости от количества страниц
+            for (int i = 1; i <= totalPages; i++)
+            {
+                Button buttonPage = new Button();
+                buttonPage.Text = i.ToString();
+                buttonPage.Tag = i; // Для обработки номера страницы
+                buttonPage.Click += ButtonPage_Click;
+                flowLayoutPanelPagination.Controls.Add(buttonPage); // Используйте FlowLayoutPanel для кнопок
+            }
         }
 
         private void LoadCategories()
@@ -60,8 +80,7 @@ namespace KursovoiProect
 
         private void ComboBoxCategories_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string selectedCategoryId = comboBoxCategories.SelectedValue?.ToString();
-            LoadProducts(textBoxSearch.Text.Trim(), comboBoxSortByPrice.SelectedItem.ToString(), selectedCategoryId);
+            LoadProducts(textBoxSearch.Text.Trim(), comboBoxSortByPrice.SelectedItem.ToString(), comboBoxCategories.SelectedValue?.ToString());
         }
 
         private void ComboBoxSortByPrice_SelectedIndexChanged(object sender, EventArgs e)
@@ -80,11 +99,9 @@ namespace KursovoiProect
             using (MySqlConnection connection = new MySqlConnection(Connection.myConnection))
             {
                 connection.Open();
-                string query = @"SELECT p.ProductID, p.ProductName, p.Description, p.Price, p.StockQuantity, 
-                         c.CategoryName, s.SuppliersName, Photo, SKU
-                         FROM products p
-                         JOIN categories c ON p.CategoryID = c.CategoryID
-                         JOIN suppliers s ON p.SuppliersID = s.SuppliersID";
+                string query = @"SELECT COUNT(*) FROM products p
+                                 JOIN categories c ON p.CategoryID = c.CategoryID
+                                 JOIN suppliers s ON p.SuppliersID = s.SuppliersID";
 
                 bool hasFilter = false;
 
@@ -100,28 +117,47 @@ namespace KursovoiProect
                     query += " p.CategoryID = @categoryId";
                 }
 
-                // Добавляем пробел перед ORDER BY
-                if (sortOption == "По возрастанию")
-                {
-                    query += " ORDER BY p.Price ASC"; // Добавлен пробел перед ORDER BY
-                }
-                else if (sortOption == "По убыванию")
-                {
-                    query += " ORDER BY p.Price DESC"; // Добавлен пробел перед ORDER BY
-                }
-
-                MySqlCommand command = new MySqlCommand(query, connection);
+                MySqlCommand countCommand = new MySqlCommand(query, connection);
                 if (!string.IsNullOrEmpty(filter))
                 {
-                    command.Parameters.AddWithValue("@filter", "%" + filter + "%");
+                    countCommand.Parameters.AddWithValue("@filter", "%" + filter + "%");
                 }
                 if (!string.IsNullOrEmpty(categoryId))
                 {
-                    command.Parameters.AddWithValue("@categoryId", categoryId);
+                    countCommand.Parameters.AddWithValue("@categoryId", categoryId);
                 }
 
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                totalRecords = Convert.ToInt32(countCommand.ExecuteScalar());
+                totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+
+                query = @"SELECT p.ProductID, p.ProductName, p.Description, p.Price, p.StockQuantity, 
+                                 c.CategoryName, s.SuppliersName, Photo, SKU
+                          FROM products p
+                          JOIN categories c ON p.CategoryID = c.CategoryID
+                          JOIN suppliers s ON p.SuppliersID = s.SuppliersID";
+
+                if (hasFilter || !string.IsNullOrEmpty(categoryId))
+                {
+                    query += hasFilter ? " AND" : " WHERE";
+                    query += " p.ProductName LIKE @filter";
+                    if (!string.IsNullOrEmpty(categoryId))
+                    {
+                        query += " AND p.CategoryID = @categoryId";
+                    }
+                }
+
+                query += " LIMIT @offset, @limit";
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+                if (hasFilter)
+                    command.Parameters.AddWithValue("@filter", "%" + filter + "%");
+                if (!string.IsNullOrEmpty(categoryId))
+                    command.Parameters.AddWithValue("@categoryId", categoryId);
+                command.Parameters.AddWithValue("@offset", (currentPage - 1) * pageSize);
+                command.Parameters.AddWithValue("@limit", pageSize);
+
                 sourceTable = new DataTable();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
                 adapter.Fill(sourceTable);
 
                 // Проверка на наличие изображений
@@ -142,6 +178,37 @@ namespace KursovoiProect
                 else
                 {
                     MessageBox.Show("Нет доступных продуктов для отображения.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                UpdatePagination();
+            }
+        }
+
+        private void UpdatePagination()
+        {
+            flowLayoutPanelPagination.Controls.Clear(); // Очищаем старые кнопки
+
+            // Создаем новые кнопки для пагинации
+            for (int i = 1; i <= totalPages; i++)
+            {
+                Button buttonPage = new Button();
+                buttonPage.Text = i.ToString();
+                buttonPage.Tag = i; // Для обработки номера страницы
+                buttonPage.Click += ButtonPage_Click;
+                flowLayoutPanelPagination.Controls.Add(buttonPage);
+            }
+        }
+
+        private void ButtonPage_Click(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            if (button != null)
+            {
+                int page = Convert.ToInt32(button.Tag);
+                if (page != currentPage)
+                {
+                    currentPage = page;
+                    LoadProducts(textBoxSearch.Text.Trim(), comboBoxSortByPrice.SelectedItem.ToString(), comboBoxCategories.SelectedValue?.ToString());
                 }
             }
         }
@@ -190,8 +257,7 @@ namespace KursovoiProect
 
         private void TextBoxSearch_TextChanged(object sender, EventArgs e)
         {
-            string selectedCategoryId = comboBoxCategories.SelectedValue?.ToString();
-            LoadProducts(textBoxSearch.Text.Trim(), comboBoxSortByPrice.SelectedItem.ToString(), selectedCategoryId);
+            LoadProducts(textBoxSearch.Text.Trim(), comboBoxSortByPrice.SelectedItem.ToString(), comboBoxCategories.SelectedValue?.ToString());
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -205,6 +271,24 @@ namespace KursovoiProect
         private void label1_Click(object sender, EventArgs e)
         {
             // Обработка события клика по метке, если необходимо
+        }
+
+        private void buttonPrevious_Click(object sender, EventArgs e)
+        {
+            if (currentPage > 1)
+            {
+                currentPage--;
+                LoadProducts(textBoxSearch.Text.Trim(), comboBoxSortByPrice.SelectedItem.ToString(), comboBoxCategories.SelectedValue?.ToString());
+            }
+        }
+
+        private void buttonNext_Click(object sender, EventArgs e)
+        {
+            if (currentPage < totalPages)
+            {
+                currentPage++;
+                LoadProducts(textBoxSearch.Text.Trim(), comboBoxSortByPrice.SelectedItem.ToString(), comboBoxCategories.SelectedValue?.ToString());
+            }
         }
     }
 }
