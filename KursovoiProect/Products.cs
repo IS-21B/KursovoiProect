@@ -30,6 +30,7 @@ namespace KursovoiProect
             // Инициализация ComboBox для сортировки
             InitializeSortComboBox();
             InitializePagination(); // Инициализация пагинации
+            InitializeColorLegend();
         }
 
         private void InitializeSortComboBox()
@@ -93,6 +94,7 @@ namespace KursovoiProect
             MessageBox.Show($"Ошибка при отображении данных: {e.Exception.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             e.ThrowException = false;
         }
+        private const int minimumStockThreshold = 5; // Минимально допустимое количество товара
 
         private void LoadProducts(string filter = "", string sortOption = "Не сортировать", string categoryId = null)
         {
@@ -170,6 +172,8 @@ namespace KursovoiProect
                 }
 
                 dataGridView1.DataSource = sourceTable;
+                ApplyConditionalFormatting();
+                
                 if (sourceTable.Rows.Count > 0)
                 {
                     dataGridView1.Columns["CategoryName"].HeaderText = "Категория";
@@ -183,7 +187,33 @@ namespace KursovoiProect
                 UpdatePagination();
             }
         }
+        private void ApplyConditionalFormatting()
+        {
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                // Получаем количество товара из строки
+                int stockQuantity = Convert.ToInt32(row.Cells["StockQuantity"].Value);
 
+                // Проверяем, меньше ли оно минимально допустимого
+                if (stockQuantity < minimumStockThreshold)
+                {
+                    row.DefaultCellStyle.BackColor = Color.Red; // Подсветка красным
+                    row.DefaultCellStyle.ForeColor = Color.White; // Цвет текста
+                }
+                else
+                {
+                    row.DefaultCellStyle.BackColor = Color.White; // Сбрасываем цвет фона
+                    row.DefaultCellStyle.ForeColor = Color.Black; // Сбрасываем цвет текста
+                }
+            }
+        }
+        private void InitializeColorLegend()
+        {
+            // Место, где вы можете добавить описание значений цветов (например, в Label или RichTextBox)
+            labelColorLegend.Text = "Цвета значений:\n" +
+                                    "- Красный: Минимально допустимый уровень товара на складе.\n" +
+                                    "- Белый: Достаточное количество товара.";
+        }
         private void UpdatePagination()
         {
             flowLayoutPanelPagination.Controls.Clear(); // Очищаем старые кнопки

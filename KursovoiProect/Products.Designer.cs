@@ -40,6 +40,7 @@
             this.buttonNext = new System.Windows.Forms.Button();
             this.buttonPrevious = new System.Windows.Forms.Button();
             this.labelCurrentPage = new System.Windows.Forms.Label();
+            this.labelColorLegend = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -154,12 +155,22 @@
             this.labelCurrentPage.TabIndex = 24;
             this.labelCurrentPage.Text = "label3";
             // 
+            // labelColorLegend
+            // 
+            this.labelColorLegend.AutoSize = true;
+            this.labelColorLegend.Location = new System.Drawing.Point(344, 540);
+            this.labelColorLegend.Name = "labelColorLegend";
+            this.labelColorLegend.Size = new System.Drawing.Size(35, 13);
+            this.labelColorLegend.TabIndex = 25;
+            this.labelColorLegend.Text = "label3";
+            // 
             // Products
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(969, 603);
+            this.ClientSize = new System.Drawing.Size(970, 603);
+            this.Controls.Add(this.labelColorLegend);
             this.Controls.Add(this.labelCurrentPage);
             this.Controls.Add(this.buttonPrevious);
             this.Controls.Add(this.buttonNext);
@@ -194,5 +205,6 @@
         private System.Windows.Forms.Button buttonNext;
         private System.Windows.Forms.Button buttonPrevious;
         private System.Windows.Forms.Label labelCurrentPage;
+        private System.Windows.Forms.Label labelColorLegend;
     }
 }
